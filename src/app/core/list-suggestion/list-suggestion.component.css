@@ -1,0 +1,94 @@
+.title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.search-box {
+  width: 95%;
+  padding: 10px;
+  margin: 10px auto;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid #aaa;
+  font-size: 16px;
+}
+
+.card {
+  background: #fff;
+  padding: 20px;
+  margin: 15px auto;
+  width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  border-left: 7px solid;
+}
+
+/* 🎨 Couleurs selon status */
+.accepted {
+  border-color: #2ecc71;  /* vert */
+}
+
+.refused {
+  border-color: #e74c3c;  /* rouge */
+  opacity: 0.6;
+}
+
+.pending {
+  border-color: #f39c12;  /* orange */
+}
+
+.status {
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* 🔘 Boutons stylés */
+.actions {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.like-btn {
+  background: #3498db;   /* bleu */
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.fav-btn {
+  background: #2ecc71;   
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.like-btn:hover {
+  background: #2980b9;
+}
+
+.fav-btn:hover {
+  background: #27ae60;
+}
+
+.likes {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.fav-title {
+  margin-left: 20px;
+  margin-top: 30px;
+}
+
+.fav-list li {
+  margin-left: 30px;
+  padding: 5px;
+}
