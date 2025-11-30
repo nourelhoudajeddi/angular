@@ -1,0 +1,24 @@
+<div *ngIf="suggestion" class="details-card">
+
+  <h2>Détails de la suggestion</h2>
+
+  <h3>{{ suggestion.title }}</h3>
+
+  <p><strong>Catégorie :</strong> {{ suggestion.category }}</p>
+
+  <p class="description">{{ suggestion.description }}</p>
+
+  <p><strong>Date :</strong> {{ suggestion.date | date }}</p>
+
+  <p><strong>Status :</strong> {{ suggestion.status }}</p>
+
+  <p><strong>Likes :</strong> {{ suggestion.likes }}</p>
+
+  <button routerLink="/listSuggestion">🔙 Retour à la liste</button>
+
+</div>
+
+<div *ngIf="!suggestion">
+  <p>Suggestion introuvable...</p>
+  <button routerLink="/listSuggestion">🔙 Retour à la liste</button>
+</div>

@@ -31,7 +31,12 @@
     <span class="likes">{{ s.likes }}</span>
 
     <button class="fav-btn" (click)="addToFavorites(s)">⭐ Ajouter aux favoris</button>
+
+<button class="details-btn" [routerLink]="['/suggestions', s.id]">Details</button>
+
+
   </div>
+
 </div>
 
 <h3 class="fav-title">Suggestions favorites :</h3>
