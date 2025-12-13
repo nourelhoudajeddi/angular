@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { SuggestionService } from '../../../core/Services/suggestion.service';
+import { Router } from '@angular/router';
 
 // Interface
 export interface Suggestion {
@@ -12,55 +14,6 @@ export interface Suggestion {
   nbLikes: number;
 }
 
-// Export du tableau de suggestions pour pouvoir l'importer dans un autre composant
-export const SUGGESTIONS: Suggestion[] = [
-  {
-    id: 1,
-    title: 'Organiser une journée team building',
-    description: 'Suggestion pour organiser une journée de team building pour renforcer les liens entre les membres de l\'équipe.',
-    category: 'Événements',
-    date: new Date('2025-01-20'),
-    status: 'acceptee',
-    nbLikes: 0
-  },
-  {
-    id: 2,
-    title: 'Améliorer le système de réservation',
-    description: 'Proposition pour améliorer la gestion des réservations en ligne avec un système de confirmation automatique.',
-    category: 'Technologie',
-    date: new Date('2025-01-15'),
-    status: 'refusee',
-    nbLikes: 0
-  },
-  {
-    id: 3,
-    title: 'Créer un système de récompenses',
-    description: 'Mise en place d\'un programme de récompenses pour motiver les employés et reconnaître leurs efforts.',
-    category: 'Ressources Humaines',
-    date: new Date('2025-01-25'),
-    status: 'refusee',
-    nbLikes: 0
-  },
-  {
-    id: 4,
-    title: 'Moderniser l\'interface utilisateur',
-    description: 'Refonte complète de l\'interface utilisateur pour une meilleure expérience utilisateur.',
-    category: 'Technologie',
-    date: new Date('2025-01-30'),
-    status: 'en_attente',
-    nbLikes: 0
-  },
-  {
-    id: 5,
-    title: 'Formation à la sécurité informatique',
-    description: 'Organisation d\'une formation sur les bonnes pratiques de sécurité informatique pour tous les employés.',
-    category: 'Formation',
-    date: new Date('2025-02-05'),
-    status: 'acceptee',
-    nbLikes: 0
-  }
-];
-
 @Component({
   selector: 'app-list-suggestion',
   templateUrl: './list-suggestion.component.html',
@@ -70,9 +23,7 @@ export class ListSuggestionComponent implements OnInit {
 
   search: string = '';
   favorites: Suggestion[] = [];
-
-  // Utilisation du tableau exporté
-  suggestions = SUGGESTIONS;
+  suggestions: Suggestion[] = [];
 
   // Reactive Form
   suggestionForm!: FormGroup;
@@ -90,42 +41,64 @@ export class ListSuggestionComponent implements OnInit {
     'Autre'
   ];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private suggestionService: SuggestionService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.suggestionForm = this.fb.group({
-      title: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-Z][a-zA-Z]*$')]],
+      title: ['', [Validators.required, Validators.minLength(5)]],
       description: ['', [Validators.required, Validators.minLength(30)]],
       category: ['', Validators.required],
       date: [{ value: new Date().toLocaleDateString(), disabled: true }],
       status: [{ value: 'en attente', disabled: true }]
     });
+
+    // Charger toutes les suggestions
+    this.loadSuggestions();
   }
 
-  // Ajouter une nouvelle suggestion
+  // Méthode pour rafraîchir la liste
+  loadSuggestions() {
+    this.suggestionService.getSuggestionsList().subscribe(list => {
+      this.suggestions = list || [];
+    });
+  }
+
   submit(): void {
     if (this.suggestionForm.valid) {
       const newSuggestion: Suggestion = {
-        id: Date.now(), // auto-incrément simulé
+        id: Date.now(),
         ...this.suggestionForm.getRawValue(),
         date: new Date(),
         status: 'en attente',
         nbLikes: 0
       };
 
-      this.suggestions.push(newSuggestion);
-
-      // Réinitialiser le formulaire
-      this.suggestionForm.reset();
-      this.suggestionForm.patchValue({
-        date: new Date().toLocaleDateString(),
-        status: 'en attente'
+      // Ajouter suggestion et rafraîchir la liste
+      this.suggestionService.addSuggestion(newSuggestion).subscribe(() => {
+        this.loadSuggestions();
+        this.suggestionForm.reset();
+        this.suggestionForm.patchValue({
+          date: new Date().toLocaleDateString(),
+          status: 'en attente'
+        });
       });
     }
   }
 
   incrementLike(s: Suggestion) {
-    s.nbLikes++;
+    this.suggestionService.incrementLikes(s.id).subscribe(updated => {
+      if (updated) {
+        // Mettre à jour uniquement le nbLikes de l'élément concerné
+        const index = this.suggestions.findIndex(item => item.id === s.id);
+        if (index !== -1) {
+          this.suggestions[index].nbLikes = updated.nbLikes;
+        }
+      }
+    });
   }
 
   addToFavorites(s: Suggestion) {
@@ -140,5 +113,11 @@ export class ListSuggestionComponent implements OnInit {
       s.title.toLowerCase().includes(this.search.toLowerCase()) ||
       s.category.toLowerCase().includes(this.search.toLowerCase())
     );
+  }
+
+  deleteSuggestion(id: number) {
+    this.suggestionService.deleteSuggestion(id).subscribe(() => {
+      this.suggestions = this.suggestions.filter(s => s.id !== id);
+    });
   }
 }

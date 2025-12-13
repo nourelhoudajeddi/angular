@@ -35,8 +35,13 @@
     <span class="likes">{{ s.nbLikes }}</span>
 
     <button class="fav-btn" (click)="addToFavorites(s)">⭐ Ajouter aux favoris</button>
+    
 
 <button class="details-btn" [routerLink]="['/suggestions', s.id]">Details</button>
+<button class="update-btn" [routerLink]="['/update-suggestion', s.id]">✏️ Modifier</button>
+
+
+<button class="delete-btn" (click)="deleteSuggestion(s.id)">🗑 Supprimer</button>
 
 
   </div>

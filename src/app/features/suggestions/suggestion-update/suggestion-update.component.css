@@ -1,0 +1,66 @@
+/* Conteneur du formulaire */
+form {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Titres des champs */
+label {
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* Champs de saisie et textarea */
+input[type="text"],
+textarea,
+select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+/* Champ textarea plus grand */
+textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Bouton submit */
+button[type="submit"] {
+  margin-top: 15px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #28a745; /* vert */
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #218838;
+}
+
+button[type="submit"]:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Messages d'erreur */
+div[ngIf] {
+  color: red;
+  font-size: 13px;
+  margin-bottom: 5px;
+}

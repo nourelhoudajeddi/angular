@@ -1,0 +1,27 @@
+<h2>{{ isUpdate ? 'Mettre à jour la suggestion' : 'Ajouter une nouvelle suggestion' }}</h2>
+
+<form [formGroup]="suggestionForm" (ngSubmit)="save()">
+
+  <label for="title">Titre :</label>
+  <input id="title" formControlName="title" type="text">
+  <div *ngIf="suggestionForm.get('title')?.invalid && suggestionForm.get('title')?.touched">
+    Le titre est requis et doit avoir au moins 5 caractères.
+  </div>
+
+  <label for="description">Description :</label>
+  <textarea id="description" formControlName="description"></textarea>
+  <div *ngIf="suggestionForm.get('description')?.invalid && suggestionForm.get('description')?.touched">
+    La description est requise et doit avoir au moins 30 caractères.
+  </div>
+
+  <label for="category">Catégorie :</label>
+  <select id="category" formControlName="category">
+    <option value="" disabled>Sélectionnez une catégorie</option>
+    <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+  </select>
+
+  <button type="submit" [disabled]="suggestionForm.invalid">
+    {{ isUpdate ? 'Mettre à jour' : 'Ajouter' }}
+  </button>
+
+</form>

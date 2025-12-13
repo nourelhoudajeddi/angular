@@ -8,6 +8,8 @@ import { FooterComponent } from './core/footer/footer.component';
 import { ListSuggestionComponent } from './features/suggestions/list-suggestion/list-suggestion.component';
 import { HomeComponent } from './core/home/home.component';
 import { NotfoundComponent } from './core/notfound/notfound.component';
+import { provideHttpClient } from '@angular/common/http';
+
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -26,7 +28,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     ReactiveFormsModule   
   ],
-  providers: [],
+  providers: [provideHttpClient()],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

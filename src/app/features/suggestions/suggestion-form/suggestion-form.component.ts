@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { SUGGESTIONS, Suggestion } from '../list-suggestion/list-suggestion.component';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Suggestion } from '../list-suggestion/list-suggestion.component';
+import { SuggestionService } from '../../../core/Services/suggestion.service';
 
 @Component({
   selector: 'app-suggestion-form',
@@ -11,6 +12,8 @@ import { SUGGESTIONS, Suggestion } from '../list-suggestion/list-suggestion.comp
 export class SuggestionFormComponent implements OnInit {
 
   suggestionForm!: FormGroup;
+  id!: number | null;
+  isUpdate: boolean = false;
 
   categories: string[] = [
     'Infrastructure et bâtiments',
@@ -25,9 +28,16 @@ export class SuggestionFormComponent implements OnInit {
     'Autre'
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private actR: ActivatedRoute,
+    private suggestionService: SuggestionService
+  ) {}
 
   ngOnInit(): void {
+    this.id = this.actR.snapshot.params['id'] || null;
+
     this.suggestionForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(5), Validators.pattern('^[A-Z][a-zA-Z]*$')]],
       description: ['', [Validators.required, Validators.minLength(30)]],
@@ -35,23 +45,39 @@ export class SuggestionFormComponent implements OnInit {
       date: [{ value: new Date().toLocaleDateString(), disabled: true }],
       status: [{ value: 'en attente', disabled: true }]
     });
+
+    // Si on est en mode update, préremplir le formulaire
+    if (this.id) {
+      this.isUpdate = true;
+      this.suggestionService.getSuggestionById(this.id).subscribe(s => {
+        if (s) {
+          this.suggestionForm.patchValue(s);
+        }
+      });
+    }
   }
 
   submit(): void {
     if (this.suggestionForm.valid) {
-      const newSuggestion: Suggestion = {
-        id: Date.now(),
+      const suggestionData: Suggestion = {
+        id: this.id || Date.now(),
         ...this.suggestionForm.getRawValue(),
         date: new Date(),
-        status: 'en attente',
-        nbLikes: 0
+        status: this.suggestionForm.getRawValue().status || 'en attente',
+        nbLikes: this.isUpdate && this.id ? this.suggestionForm.getRawValue().nbLikes || 0 : 0
       };
 
-      // On ajoute la suggestion directement dans le tableau global de list-suggestion
-      SUGGESTIONS.push(newSuggestion);
-
-      // Redirection vers la liste
-      this.router.navigate(['/listSuggestion']);
+      if (this.isUpdate) {
+        this.suggestionService.updateSuggestion(suggestionData).subscribe(() => {
+          alert('Suggestion mise à jour !');
+          this.router.navigate(['/listSuggestion']);
+        });
+      } else {
+        this.suggestionService.addSuggestion(suggestionData).subscribe(() => {
+          alert('Nouvelle suggestion ajoutée !');
+          this.router.navigate(['/listSuggestion']);
+        });
+      }
     }
   }
 }
