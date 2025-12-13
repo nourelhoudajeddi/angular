@@ -15,7 +15,6 @@ export class SuggestionDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    // Utilisation directe de SUGGESTIONS
     this.suggestion = SUGGESTIONS.find(s => s.id === id);
   }
 }
