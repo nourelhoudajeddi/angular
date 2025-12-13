@@ -52,6 +52,7 @@
   font-size: 12px;
   margin-top: 4px;
   display: block;
+  color: red; /* <-- ici le texte sera rouge */
 }
 
 /* Submit button */
@@ -86,4 +87,10 @@
     margin: 15px;
     padding: 15px;
   }
+}
+
+.card input.form-control.is-invalid,
+.card textarea.form-control.is-invalid,
+.card select.form-select.is-invalid {
+  border-color: red !important;
 }
