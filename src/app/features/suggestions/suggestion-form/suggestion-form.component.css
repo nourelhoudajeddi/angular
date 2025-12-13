@@ -1,0 +1,89 @@
+/* Card container */
+.card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Form labels */
+.card label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+/* Form inputs & textarea */
+.card input.form-control,
+.card select.form-select,
+.card textarea.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card input.form-control:focus,
+.card select.form-select:focus,
+.card textarea.form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0,123,255,0.2);
+  outline: none;
+}
+
+/* Textarea */
+.card textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* Error messages */
+.card .text-danger {
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Submit button */
+.card .btn-primary {
+  background-color: #007bff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.card .btn-primary:hover:not(:disabled) {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+.card .btn-primary:disabled {
+  background-color: #a0c4ff;
+  cursor: not-allowed;
+}
+
+/* Spacing for form groups */
+.card .mb-3 {
+  margin-bottom: 15px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin: 15px;
+    padding: 15px;
+  }
+}

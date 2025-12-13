@@ -1,0 +1,54 @@
+<div class="card p-4">
+  <form [formGroup]="suggestionForm" (ngSubmit)="submit()">
+
+    <!-- Titre -->
+    <div class="mb-3">
+      <label>Titre :</label>
+      <input class="form-control" formControlName="title">
+      <small class="text-danger" *ngIf="suggestionForm.get('title')?.touched && suggestionForm.get('title')?.invalid">
+        <span *ngIf="suggestionForm.get('title')?.errors?.['required']">Titre obligatoire</span><br>
+        <span *ngIf="suggestionForm.get('title')?.errors?.['minlength']">Minimum 5 caractères</span><br>
+        <span *ngIf="suggestionForm.get('title')?.errors?.['pattern']">Commence par une majuscule</span>
+      </small>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-3">
+      <label>Description :</label>
+      <textarea class="form-control" formControlName="description"></textarea>
+      <small class="text-danger" *ngIf="suggestionForm.get('description')?.touched && suggestionForm.get('description')?.invalid">
+        Minimum 30 caractères
+      </small>
+    </div>
+
+    <!-- Catégorie -->
+    <div class="mb-3">
+      <label>Catégorie :</label>
+      <select class="form-select" formControlName="category">
+        <option value="">-- Sélectionnez une catégorie --</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+      </select>
+      <small class="text-danger" *ngIf="suggestionForm.get('category')?.touched && suggestionForm.get('category')?.invalid">
+        Catégorie obligatoire
+      </small>
+    </div>
+
+    <!-- Date -->
+    <div class="mb-3">
+      <label>Date :</label>
+      <input class="form-control" formControlName="date" readonly>
+    </div>
+
+    <!-- Status -->
+    <div class="mb-3">
+      <label>Status :</label>
+      <input class="form-control" formControlName="status" readonly>
+    </div>
+
+    <!-- Bouton Soumettre -->
+    <button class="btn btn-primary" type="submit" [disabled]="suggestionForm.invalid">
+      Soumettre
+    </button>
+
+  </form>
+</div>

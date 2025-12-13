@@ -6,9 +6,10 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './core/header/header.component';
 import { FooterComponent } from './core/footer/footer.component';
 import { ListSuggestionComponent } from './features/suggestions/list-suggestion/list-suggestion.component';
-import { FormsModule } from '@angular/forms';
 import { HomeComponent } from './core/home/home.component';
 import { NotfoundComponent } from './core/notfound/notfound.component';
+
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { NotfoundComponent } from './core/notfound/notfound.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule   
+    FormsModule,
+    ReactiveFormsModule   
   ],
   providers: [],
   bootstrap: [AppComponent]

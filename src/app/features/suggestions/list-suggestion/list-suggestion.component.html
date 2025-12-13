@@ -1,5 +1,9 @@
 <h2 class="title">Liste des suggestions</h2>
 
+<button class="btn btn-success mb-3" routerLink="/add">
+  ➕ Ajouter suggestion
+</button>
+
 <input 
   type="text" 
   placeholder="Rechercher par titre ou catégorie"
@@ -28,7 +32,7 @@
 
   <div *ngIf="s.status !== 'refusee'" class="actions">
     <button class="like-btn" (click)="incrementLike(s)">👍 Like</button>
-    <span class="likes">{{ s.likes }}</span>
+    <span class="likes">{{ s.nbLikes }}</span>
 
     <button class="fav-btn" (click)="addToFavorites(s)">⭐ Ajouter aux favoris</button>
 
